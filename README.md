@@ -1,4 +1,5 @@
-# 基本操作
+# tmux.conf
+## 基本操作
 
 - 起動
 
@@ -40,7 +41,7 @@ tmux kill-session -t 対象セッション名
 tmux new -s セッション名
 ```
 
-# ショートカットキー
+## ショートカットキー
 
 |コマンド|役割|
 |----|----|
@@ -71,3 +72,17 @@ tmux new -s セッション名
 |`prefix+y`|コピー終了位置決定(viモード)|
 |`prefix+C-p`|コピー内容の貼付け|
 
+## xclipを用いたクリップボードの同期
+
+前提
+* `xclip`がインストールされている。
+* x11が有効になっている。
+  * sshの場合にはx11転送が有効かつサーバーにx11がインストールされている。
+
+以下の設定を追記
+```
+# xclip設定
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -i -sel clip > /dev/null"
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -i -sel clip > /dev/null"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -i -sel clip > /dev/null"
+```
